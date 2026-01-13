@@ -1,26 +1,57 @@
-:root {
-  color-scheme: light dark;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-}
-
-body {
+/* Reset */
+* {
   margin: 0;
-  background: #0f172a;
-  color: #e2e8f0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Base styles */
+body {
+  min-height: 100vh;
+  background-color: #f7f6f3; /* warm off-white */
+  color: #2f2f2f; /* soft charcoal */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout container */
 .container {
-  max-width: 720px;
-  margin: 20vh auto 0;
-  padding: 0 1.5rem;
+  text-align: center;
+  max-width: 480px;
+  padding: 2rem;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+/* App name */
+.app-name {
+  font-size: 3rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
 }
 
-p {
-  font-size: 1.125rem;
+/* Tagline */
+.tagline {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  color: #4a4a4a;
+}
+
+/* Primary button */
+.primary-button {
+  background-color: #8fa6a0; /* muted sage */
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 2.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+  background-color: #7b938d;
 }
