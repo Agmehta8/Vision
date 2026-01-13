@@ -55,3 +55,9 @@ body {
 .primary-button:hover {
   background-color: #7b938d;
 }
+.intro-line {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  color: #3a3a3a;
+}
