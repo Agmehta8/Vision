@@ -3,42 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vision – Conversation</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Vision – Questions</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .topic-link {
+      display: block;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #111;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .topic-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+  </style>
 </head>
 
 <body>
   <main class="container">
 
-    <h2 class="question-title">
-      What Do You Want To Talk About Today?
-    </h2>
+    <h2>What Do You Want To Talk About Today?</h2>
 
     <div class="topic-grid">
 
-      <a href="#" class="topic-link">Understanding What’s Happening</a>
-      <a href="#" class="topic-link">How This Has Been Feeling For You</a>
-      <a href="#" class="topic-link">Choices and Decisions Ahead</a>
-      <a href="#" class="topic-link">What Matters Most To You</a>
-      <a href="#" class="topic-link">Physical Symptoms And Comfort</a>
+      <a href="#" class="topic-link">
+        Understanding What’s Happening
+      </a>
 
-      <a
-  href="https://agmehta8.github.io/Vision/VUCA.html"
-  style="
-    display: block;
-    margin-top: 40px;
-    padding: 16px;
-    background: red;
-    color: white;
-    font-size: 20px;
-    text-align: center;
-  "
->
-  TEST LINK
-</a>
+      <a href="#" class="topic-link">
+        How This Has Been Feeling For You
+      </a>
+
+      <a href="#" class="topic-link">
+        Choices and Decisions Ahead
+      </a>
+
+      <a href="#" class="topic-link">
+        What Matters Most To You
+      </a>
+
+      <a href="#" class="topic-link">
+        Physical Symptoms And Comfort
+      </a>
+
+      <!-- 🔑 THIS IS THE IMPORTANT ONE -->
+      <a href="VUCA.html" class="topic-link">
+        Understanding Uncertainty, Confusion, and Chaos
+      </a>
 
     </div>
-
   </main>
 </body>
 </html>
