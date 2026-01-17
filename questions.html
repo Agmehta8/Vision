@@ -14,7 +14,7 @@
       --text-muted: #666666;
       --shadow-soft: 0 4px 12px rgba(0,0,0,0.08);
       --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
-      --accent-color: #000; /* Adjust this if Vision has a specific brand color */
+      --accent-color: #4a5568; /* A peaceful slate gray for the logo */
     }
 
     body {
@@ -68,10 +68,20 @@
         grid-template-columns: 1fr;
         grid-template-rows: auto;
         gap: 1rem;
+        margin-top: 2rem; /* Add some space below header on mobile */
       }
-      /* Hide the logo spacer on mobile */
+      
+      /* On mobile, move logo to top and make smaller */
       .center-logo-space {
-        display: none; 
+        grid-column: auto;
+        grid-row: 1;
+        height: 100px;
+        margin-bottom: 1rem;
+      }
+      
+      .center-logo-svg {
+          width: 80px;
+          height: 80px;
       }
     }
 
@@ -115,7 +125,7 @@
       grid-row: 2;
     }
 
-    /* CENTER HOLE (For Logo/Animation) */
+    /* CENTER HOLE (For Logo) */
     .center-logo-space {
       grid-column: 2;
       grid-row: 2;
@@ -124,8 +134,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Optional: visual guide for where the logo goes */
-      /* border: 2px dashed #ccc; border-radius: 50%; opacity: 0.3; */
+    }
+    
+    /* SVG Styling */
+    .center-logo-svg {
+        width: 120px;
+        height: 120px;
+        /* Defines the gradient colors */
+        --stop-color-1: #A0AEC0;
+        --stop-color-2: #4A5568;
     }
 
     /* 3. Choices: Middle Right */
@@ -151,11 +168,19 @@
     }
 
     @media (max-width: 768px) {
+      /* Reset specific positioning on mobile */
       .item-1, .item-2, .item-3, .item-4, .item-5 {
         grid-column: auto;
         grid-row: auto;
         margin: 0;
       }
+      /* Change order so logo is first on mobile */
+      .item-1 { order: 2; }
+      .item-2 { order: 3; }
+      .item-3 { order: 4; }
+      .item-4 { order: 5; }
+      .item-5 { order: 6; }
+      .center-logo-space { order: 1; }
     }
 
   </style>
@@ -178,7 +203,22 @@
       </a>
 
       <div class="center-logo-space">
-        </div>
+        <svg class="center-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="logoGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:var(--stop-color-2);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:var(--stop-color-1);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <g opacity="0.9">
+             <path d="M 100 40 C 60 40, 40 100, 60 160 C 70 130, 85 100, 100 80" 
+                   fill="url(#logoGradient)" opacity="0.8"/>
+             <path d="M 100 40 C 140 40, 160 100, 140 160 C 130 130, 115 100, 100 80" 
+                   fill="url(#logoGradient)" opacity="0.8"/>
+             <circle cx="100" cy="55" r="18" fill="url(#logoGradient)" />
+            </g>
+        </svg>
+      </div>
 
       <a href="#" class="topic-link item-3">
         Your Choices And Decisions
