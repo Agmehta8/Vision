@@ -118,11 +118,12 @@ body {
   --tile-h: 150px;
   --col-gap: 70px;
   --row-gap: 28px;
+  --half-tile: calc(var(--tile-w) / 2);
 
   display: grid;
-  grid-template-columns: repeat(3, var(--tile-w));
+  grid-template-columns: repeat(4, var(--half-tile));
   grid-auto-rows: var(--tile-h);
-  column-gap: var(--col-gap);
+  column-gap: calc(var(--col-gap) / 2);
   row-gap: var(--row-gap);
 
   justify-content: center;
@@ -143,4 +144,34 @@ body {
   line-height: 1.25;
 }
 
-/* Honeycomb positi*
+/* Honeycomb positioning */
+
+.diamond-grid .item-1{
+  grid-column: 2 / span 2;
+  grid-row: 1;
+}
+
+.diamond-grid .item-2{
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+
+.diamond-grid .item-3{
+  grid-column: 3 / span 2;
+  grid-row: 2;
+}
+
+.diamond-grid .item-4{
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+.diamond-grid .item-5{
+  grid-column: 3 / span 2;
+  grid-row: 3;
+}
+
+.diamond-grid .item-6{
+  grid-column: 2 / span 2;
+  grid-row: 4;
+}
