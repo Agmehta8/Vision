@@ -186,17 +186,21 @@ body {
 /* Diary page */
 .diary-page {
   min-height: 100vh;
-  background-color: #8fa6a0;
+  background-color: #fcfaf7;
   color: #2f2f2f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  padding: 0 1.5rem;
 }
 
 .diary-main {
-  max-width: 800px;
-  width: 100%;
+  max-width: 700px;
+  width: 90%;
+  margin: 10vh auto;
   padding: 40px;
+  background-color: #8fa6a0;
+  color: #fdfbf7;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -213,6 +217,8 @@ body {
   transform: none;
   align-self: center;
   transition: opacity 0.3s ease, background 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #fdfbf7;
 }
 
 .diary-header {
@@ -225,26 +231,32 @@ body {
   font-weight: 500;
   letter-spacing: 0.2rem;
   text-transform: uppercase;
-  color: #2f2f2f;
+  color: inherit;
 }
 
 .diary-entry {
   width: 100%;
   min-height: 360px;
   border: none;
-  border-radius: 24px;
+  border-radius: 16px;
   padding: 2rem;
   font-size: 1.1rem;
   line-height: 1.8;
   letter-spacing: 0.5px;
-  background-color: rgba(214, 205, 193, 0.1);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: none;
   resize: vertical;
   font-family: inherit;
 }
 
 .diary-entry:focus {
   outline: none;
+}
+
+.diary-entry::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .diary-main:focus-within .diary-header,
