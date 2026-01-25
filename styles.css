@@ -93,8 +93,8 @@ body {
   align-items: center;
   justify-content: center;
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: var(--hex-size);
+  height: var(--hex-size);
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -161,40 +161,50 @@ body {
 
 /* QUESTIONS – HONEYCOMB (6 tiles) */
 .diamond-grid{
+  --hex-size: 120px;
+  --ring-radius: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: 100%;
+  max-width: 480px;
+  height: calc(var(--ring-radius) * 2 + var(--hex-size));
   margin: 0 auto;
 }
 
 /* Honeycomb positioning */
 
 .diamond-grid .item-1{
-  transform: translate(-50%, -50%) rotate(0deg) translateY(-180px) rotate(-0deg);
+  transform: translate(-50%, -50%) rotate(0deg) translateY(calc(var(--ring-radius) * -1)) rotate(-0deg);
 }
 
 .diamond-grid .item-2{
-  transform: translate(-50%, -50%) rotate(60deg) translateY(-180px) rotate(-60deg);
+  transform: translate(-50%, -50%) rotate(60deg) translateY(calc(var(--ring-radius) * -1)) rotate(-60deg);
 }
 
 .diamond-grid .item-3{
-  transform: translate(-50%, -50%) rotate(120deg) translateY(-180px) rotate(-120deg);
+  transform: translate(-50%, -50%) rotate(120deg) translateY(calc(var(--ring-radius) * -1)) rotate(-120deg);
 }
 
 .diamond-grid .item-4{
-  transform: translate(-50%, -50%) rotate(180deg) translateY(-180px) rotate(-180deg);
+  transform: translate(-50%, -50%) rotate(180deg) translateY(calc(var(--ring-radius) * -1)) rotate(-180deg);
 }
 
 .diamond-grid .item-5{
-  transform: translate(-50%, -50%) rotate(240deg) translateY(-180px) rotate(-240deg);
+  transform: translate(-50%, -50%) rotate(240deg) translateY(calc(var(--ring-radius) * -1)) rotate(-240deg);
 }
 
 .diamond-grid .item-6{
-  transform: translate(-50%, -50%) rotate(300deg) translateY(-180px) rotate(-300deg);
+  transform: translate(-50%, -50%) rotate(300deg) translateY(calc(var(--ring-radius) * -1)) rotate(-300deg);
+}
+
+@media (max-width: 400px) {
+  .diamond-grid {
+    --hex-size: 90px;
+    --ring-radius: 130px;
+  }
 }
 
 /* Diary page */
