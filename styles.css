@@ -114,10 +114,10 @@ body {
 
 /* QUESTIONS – HONEYCOMB (6 tiles) */
 .diamond-grid{
-  --tile-w: 260px;
-  --tile-h: 150px;
-  --col-gap: 70px;
-  --row-gap: 28px;
+  --tile-w: 220px;
+  --tile-h: 120px;
+  --col-gap: 56px;
+  --row-gap: 22px;
   --half-tile: calc(var(--tile-w) / 2);
 
   display: grid;
@@ -140,8 +140,8 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 18px;
-  line-height: 1.25;
+  padding: 12px;
+  line-height: 1.2;
 }
 
 /* Honeycomb positioning */
