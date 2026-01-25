@@ -114,17 +114,11 @@ body {
 
 /* QUESTIONS – HONEYCOMB (6 tiles) */
 .diamond-grid{
-  --tile-w: 220px;
-  --tile-h: 120px;
-  --col-gap: 56px;
-  --row-gap: 22px;
-  --half-tile: calc(var(--tile-w) / 2);
-
   display: grid;
-  grid-template-columns: repeat(4, var(--half-tile));
-  grid-auto-rows: var(--tile-h);
-  column-gap: calc(var(--col-gap) / 2);
-  row-gap: var(--row-gap);
+  grid-template-columns: repeat(4, max-content);
+  grid-auto-rows: auto;
+  column-gap: 10px;
+  row-gap: 10px;
 
   justify-content: center;
   align-content: center;
@@ -134,14 +128,15 @@ body {
 
 /* Force uniform tiles */
 .topic-link{
-  width: var(--tile-w);
-  height: var(--tile-h);
+  width: fit-content;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 12px;
   line-height: 1.2;
+  box-sizing: border-box;
 }
 
 /* Honeycomb positioning */
