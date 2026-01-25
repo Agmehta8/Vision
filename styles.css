@@ -209,16 +209,18 @@ body {
 
 .diary-back.topic-link {
   position: static;
-  width: auto;
+  display: block;
+  width: fit-content;
   height: auto;
+  margin: 40px auto;
   border-radius: 999px;
   padding: 0.65rem 1.8rem;
   font-size: 0.95rem;
   transform: none;
-  align-self: center;
   transition: opacity 0.3s ease, background 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.18);
-  color: #fdfbf7;
+  background-color: rgba(122, 141, 153, 0.12);
+  border: 1px solid rgba(122, 141, 153, 0.35);
+  color: #5f707a;
 }
 
 .diary-header {
@@ -259,7 +261,6 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.diary-main:focus-within .diary-header,
-.diary-main:focus-within .diary-back {
+.diary-main:focus-within .diary-header {
   opacity: 0.2;
 }
