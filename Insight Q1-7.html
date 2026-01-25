@@ -4,58 +4,610 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vision – Patient Needs Assessment</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* Base styles */
+    body {
+      min-height: 100vh;
+      background-color: #f7f6f3; /* warm off-white */
+      color: #2f2f2f; /* soft charcoal */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Layout container */
+    .container {
+      text-align: center;
+      max-width: 520px;
+      width: 100%;
+      padding: 2.5rem 1.5rem 3.5rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-copy {
+      text-align: left;
+      flex: 1;
+    }
+
+    .app-name {
+      font-size: 2.2rem;
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.01em;
+    }
+
+    .intro-line {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #4a4a4a;
+    }
+
+    .progress-ring {
+      width: 86px;
+      height: 86px;
+    }
+
+    .progress-ring circle {
+      fill: none;
+      stroke-width: 8;
+    }
+
+    .progress-ring .track {
+      stroke: #e2e0db;
+    }
+
+    .progress-ring .progress {
+      stroke: #8fa6a0;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 300ms ease;
+    }
+
+    .progress-label {
+      font-size: 0.9rem;
+      fill: #2f2f2f;
+      font-weight: 600;
+    }
+
+    .assessment-list {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .assessment-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      box-shadow: 0 10px 24px rgba(47, 47, 47, 0.08);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+    }
+
+    .assessment-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(47, 47, 47, 0.12);
+    }
+
+    .assessment-card.completed {
+      background: rgba(143, 166, 160, 0.15);
+    }
+
+    .assessment-card.skipped {
+      background: #f0f0ed;
+      color: #6b6b6b;
+    }
+
+    .status-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #d3d3cf;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 300ms ease, background-color 300ms ease;
+      font-size: 1rem;
+      color: #8fa6a0;
+    }
+
+    .assessment-card.completed .status-icon {
+      background-color: #8fa6a0;
+      border-color: #8fa6a0;
+      color: #ffffff;
+    }
+
+    .assessment-card.skipped .status-icon {
+      border-color: #c1c1bd;
+      color: #9a9a96;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .card-category {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8fa6a0;
+      font-weight: 600;
+    }
+
+    .card-question {
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    .topic-link {
+      display: inline-block;
+      margin-top: 2.5rem;
+      text-decoration: none;
+      color: #4a4a4a;
+      font-size: 0.95rem;
+    }
+
+    .focus-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(247, 246, 243, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: opacity 300ms ease, transform 300ms ease;
+      padding: 2rem 1.5rem;
+      z-index: 10;
+    }
+
+    .focus-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .focus-card {
+      background: #ffffff;
+      border-radius: 22px;
+      max-width: 560px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(47, 47, 47, 0.12);
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .focus-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      color: #2f2f2f;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      transition: color 300ms ease;
+    }
+
+    .back-button:hover {
+      color: #8fa6a0;
+    }
+
+    .skip-button {
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      color: #8d8d89;
+      cursor: pointer;
+      transition: color 300ms ease;
+    }
+
+    .skip-button:hover {
+      color: #6f6f6b;
+    }
+
+    .focus-category {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8fa6a0;
+      font-weight: 600;
+    }
+
+    .focus-question {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .options-row {
+      display: grid;
+      grid-auto-flow: column;
+      gap: 0.75rem;
+    }
+
+    .option-tile {
+      border: 1.5px solid #d3d3cf;
+      border-radius: 16px;
+      padding: 0.9rem 1rem;
+      font-size: 0.98rem;
+      line-height: 1.4;
+      background: #ffffff;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 300ms ease, border-width 300ms ease, box-shadow 300ms ease;
+    }
+
+    .option-tile strong {
+      font-weight: 600;
+    }
+
+    .option-tile.active {
+      border-color: #8fa6a0;
+      border-width: 2.5px;
+      box-shadow: 0 8px 18px rgba(143, 166, 160, 0.2);
+    }
+
+    .secondary-options {
+      margin-top: 0.5rem;
+    }
+
+    .secondary-label {
+      font-size: 0.85rem;
+      color: #6f6f6b;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+
+    .focus-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .primary-button {
+      background-color: #8fa6a0; /* muted sage */
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 2.25rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .primary-button:hover { background-color: #7b938d; }
+
+    .ghost-button {
+      background: #f2f1ee;
+      color: #2f2f2f;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 2.25rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .ghost-button:hover {
+      background: #e2e0db;
+    }
+
+    @media (max-width: 540px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .progress-ring {
+        align-self: flex-end;
+      }
+
+      .focus-card {
+        padding: 1.5rem;
+      }
+
+      .options-row {
+        grid-auto-flow: row;
+      }
+
+      .focus-footer {
+        flex-direction: column;
+      }
+
+      .primary-button,
+      .ghost-button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-<body class="assessment-page">
-  <main class="assessment-main">
-    <header class="assessment-header">
-      <p class="assessment-kicker">My Diagnosis</p>
-      <h1 class="assessment-title">Patient Needs Assessment</h1>
-      <p class="assessment-intro">
-        Take a moment to reflect on what you need most right now. These seven prompts can help
-        you capture the information that will guide your care conversations and next steps.
-      </p>
-    </header>
+<body>
+  <main class="container">
+    <section class="dashboard" aria-live="polite">
+      <header class="dashboard-header">
+        <div class="dashboard-copy">
+          <p class="intro-line">Welcome back. Let’s check in gently and take this one step at a time.</p>
+          <h1 class="app-name">Patient Needs Assessment</h1>
+        </div>
+        <svg class="progress-ring" viewBox="0 0 100 100" aria-label="Progress">
+          <circle class="track" cx="50" cy="50" r="36"></circle>
+          <circle class="progress" cx="50" cy="50" r="36" stroke-dasharray="226" stroke-dashoffset="226"></circle>
+          <text class="progress-label" x="50" y="56" text-anchor="middle">0%</text>
+        </svg>
+      </header>
 
-    <ol class="assessment-list">
-      <li class="assessment-card">
-        <h2>Q1. What is the diagnosis, and what does it mean for me?</h2>
-        <p class="assessment-help">Summarize what you know so far and any terms you want clarified.</p>
-        <textarea class="assessment-input" placeholder="I want to understand..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q2. What questions do I need answered right away?</h2>
-        <p class="assessment-help">List the most urgent questions you want to ask your care team.</p>
-        <textarea class="assessment-input" placeholder="My top questions are..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q3. What symptoms or changes should I track?</h2>
-        <p class="assessment-help">Note anything you are experiencing and what feels different.</p>
-        <textarea class="assessment-input" placeholder="I am noticing..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q4. What are my immediate care priorities?</h2>
-        <p class="assessment-help">Think about comfort, pain relief, or daily needs that matter most.</p>
-        <textarea class="assessment-input" placeholder="Right now, I need..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q5. What support do I want from my care team or loved ones?</h2>
-        <p class="assessment-help">Identify who you want involved and how they can help.</p>
-        <textarea class="assessment-input" placeholder="Support I want includes..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q6. What decisions feel urgent or overwhelming?</h2>
-        <p class="assessment-help">Capture any choices you are facing so you can revisit them later.</p>
-        <textarea class="assessment-input" placeholder="I am deciding about..."></textarea>
-      </li>
-      <li class="assessment-card">
-        <h2>Q7. What information or resources would help me feel more prepared?</h2>
-        <p class="assessment-help">List what would make you feel steadier, informed, or reassured.</p>
-        <textarea class="assessment-input" placeholder="Resources I want are..."></textarea>
-      </li>
-    </ol>
+      <ol class="assessment-list" id="assessmentList"></ol>
 
-    <a href="questions.html" class="topic-link assessment-back">Back to Questions</a>
+      <a href="questions.html" class="topic-link">Back to Questions</a>
+    </section>
   </main>
+
+  <section class="focus-overlay" id="focusOverlay" aria-hidden="true">
+    <div class="focus-card" role="dialog" aria-modal="true">
+      <header class="focus-header">
+        <button class="back-button" id="backButton" type="button">← Back</button>
+        <button class="skip-button" id="skipButton" type="button">Skip</button>
+      </header>
+      <div>
+        <p class="focus-category" id="focusCategory"></p>
+        <h2 class="focus-question" id="focusQuestion"></h2>
+      </div>
+      <div id="optionsContainer"></div>
+      <footer class="focus-footer">
+        <button class="ghost-button" id="previousButton" type="button">Previous</button>
+        <button class="primary-button" id="nextButton" type="button">Next</button>
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    const questions = [
+      {
+        id: "q1",
+        category: "Status",
+        question: "What stage is your cancer?",
+        options: [
+          "No evidence of cancer",
+          "Early stage of cancer",
+          "Middle stage of cancer",
+          "Late stage of cancer",
+          "End stage of cancer",
+          "Do not know"
+        ]
+      },
+      {
+        id: "q2",
+        category: "Provider Perspective",
+        question: "Which of the following best represents what your oncology providers have told you about a cure for your cancer?",
+        options: [
+          "<strong>My cancer will be cured</strong>",
+          "<strong>My cancer may be cured</strong> if treatments are successful",
+          "<strong>My cancer cannot be cured</strong> but we will try to control the cancer with treatment",
+          "<strong>My cancer cannot be cured</strong> and I am not able to have any additional cancer treatment",
+          "Do not know"
+        ]
+      },
+      {
+        id: "q3",
+        category: "Patient Perspective",
+        question: "Which of the following best represents what you think about a cure for your cancer?",
+        options: [
+          "<strong>My cancer will be cured</strong>",
+          "<strong>My cancer may be cured</strong> if treatments are successful",
+          "<strong>My cancer cannot be cured</strong> but we will try to control the cancer with treatment",
+          "<strong>My cancer cannot be cured</strong> and I am not able to have any additional cancer treatment",
+          "Do not know"
+        ]
+      },
+      {
+        id: "q4",
+        category: "Prognosis Info",
+        question: "What have your oncology providers told you about how long you are expected to live (your prognosis)?",
+        ui_type: "timeline",
+        options: ["Weeks", "Months", "Years", "Decades"],
+        secondary_options: [
+          "We have discussed this, but I have not received a clear answer",
+          "We have not discussed this"
+        ]
+      },
+      {
+        id: "q5",
+        category: "Patient Prognosis",
+        question: "At this moment, how long do you think you will live?",
+        ui_type: "timeline",
+        options: ["Weeks", "Months", "Years", "Decades"],
+        secondary_options: ["I do not know", "I do not want to think about this"]
+      },
+      {
+        id: "q6",
+        category: "Health Status",
+        question: "How would you describe your current health status?",
+        options: [
+          "Relatively healthy",
+          "Relatively healthy and terminally ill",
+          "Seriously ill but not terminally ill",
+          "Seriously ill and terminally ill",
+          "Do not know"
+        ]
+      }
+    ];
+
+    const state = questions.map(() => ({ status: "unanswered", answer: null }));
+    const assessmentList = document.getElementById("assessmentList");
+    const focusOverlay = document.getElementById("focusOverlay");
+    const focusCategory = document.getElementById("focusCategory");
+    const focusQuestion = document.getElementById("focusQuestion");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const backButton = document.getElementById("backButton");
+    const skipButton = document.getElementById("skipButton");
+    const previousButton = document.getElementById("previousButton");
+    const nextButton = document.getElementById("nextButton");
+    const progressRing = document.querySelector(".progress-ring .progress");
+    const progressLabel = document.querySelector(".progress-ring .progress-label");
+
+    let activeIndex = 0;
+
+    function renderDashboard() {
+      assessmentList.innerHTML = "";
+      questions.forEach((item, index) => {
+        const card = document.createElement("li");
+        card.className = `assessment-card ${state[index].status}`.trim();
+        card.innerHTML = `
+          <span class="status-icon">${statusIcon(state[index].status)}</span>
+          <div class="card-meta">
+            <span class="card-category">${item.category}</span>
+            <span class="card-question">${item.question}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => openFocus(index));
+        assessmentList.appendChild(card);
+      });
+      updateProgress();
+    }
+
+    function statusIcon(status) {
+      if (status === "completed") return "✓";
+      if (status === "skipped") return "–";
+      return "○";
+    }
+
+    function updateProgress() {
+      const completedCount = state.filter(item => item.status === "completed").length;
+      const percent = Math.round((completedCount / questions.length) * 100);
+      const circumference = 2 * Math.PI * 36;
+      progressRing.style.strokeDasharray = circumference;
+      progressRing.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+      progressLabel.textContent = `${percent}%`;
+    }
+
+    function openFocus(index) {
+      activeIndex = index;
+      const item = questions[index];
+      focusCategory.textContent = item.category;
+      focusQuestion.textContent = item.question;
+      renderOptions(item, state[index].answer);
+      focusOverlay.classList.add("active");
+      focusOverlay.setAttribute("aria-hidden", "false");
+      previousButton.disabled = index === 0;
+      nextButton.textContent = index === questions.length - 1 ? "Finish" : "Next";
+    }
+
+    function closeFocus() {
+      focusOverlay.classList.remove("active");
+      focusOverlay.setAttribute("aria-hidden", "true");
+      renderDashboard();
+    }
+
+    function renderOptions(item, selectedAnswer) {
+      optionsContainer.innerHTML = "";
+      const optionsWrapper = document.createElement("div");
+      const primaryOptions = document.createElement("div");
+      primaryOptions.className = item.ui_type === "timeline" ? "options-row" : "options-grid";
+
+      item.options.forEach(option => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-tile";
+        button.innerHTML = option;
+        if (selectedAnswer === option) {
+          button.classList.add("active");
+        }
+        button.addEventListener("click", () => selectOption(option));
+        primaryOptions.appendChild(button);
+      });
+
+      optionsWrapper.appendChild(primaryOptions);
+
+      if (item.secondary_options) {
+        const secondaryWrapper = document.createElement("div");
+        secondaryWrapper.className = "secondary-options";
+        secondaryWrapper.innerHTML = '<p class="secondary-label">If none of these fit, choose one of these:</p>';
+        const secondaryOptions = document.createElement("div");
+        secondaryOptions.className = "options-grid";
+        item.secondary_options.forEach(option => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "option-tile";
+          button.textContent = option;
+          if (selectedAnswer === option) {
+            button.classList.add("active");
+          }
+          button.addEventListener("click", () => selectOption(option));
+          secondaryOptions.appendChild(button);
+        });
+        secondaryWrapper.appendChild(secondaryOptions);
+        optionsWrapper.appendChild(secondaryWrapper);
+      }
+
+      optionsContainer.appendChild(optionsWrapper);
+    }
+
+    function selectOption(option) {
+      state[activeIndex].answer = option;
+      state[activeIndex].status = "completed";
+      renderOptions(questions[activeIndex], option);
+    }
+
+    function handleSkip() {
+      state[activeIndex].status = "skipped";
+      state[activeIndex].answer = null;
+      goToNext();
+    }
+
+    function goToNext() {
+      if (activeIndex < questions.length - 1) {
+        openFocus(activeIndex + 1);
+      } else {
+        closeFocus();
+      }
+    }
+
+    function goToPrevious() {
+      if (activeIndex > 0) {
+        openFocus(activeIndex - 1);
+      }
+    }
+
+    backButton.addEventListener("click", closeFocus);
+    skipButton.addEventListener("click", handleSkip);
+    previousButton.addEventListener("click", goToPrevious);
+    nextButton.addEventListener("click", goToNext);
+
+    renderDashboard();
+  </script>
 </body>
 </html>
