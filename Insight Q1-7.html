@@ -108,10 +108,6 @@
       background: rgba(143, 166, 160, 0.15);
     }
 
-    .assessment-card.skipped {
-      background: #f0f0ed;
-      color: #6b6b6b;
-    }
 
     .status-icon {
       width: 36px;
@@ -133,10 +129,6 @@
       color: #ffffff;
     }
 
-    .assessment-card.skipped .status-icon {
-      border-color: #c1c1bd;
-      color: #9a9a96;
-    }
 
     .card-meta {
       display: flex;
@@ -200,7 +192,7 @@
     .focus-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
     .back-button {
@@ -220,18 +212,6 @@
       color: #8fa6a0;
     }
 
-    .skip-button {
-      background: none;
-      border: none;
-      font-size: 0.95rem;
-      color: #8d8d89;
-      cursor: pointer;
-      transition: color 300ms ease;
-    }
-
-    .skip-button:hover {
-      color: #6f6f6b;
-    }
 
     .focus-category {
       font-size: 0.85rem;
@@ -380,7 +360,6 @@
     <div class="focus-card" role="dialog" aria-modal="true">
       <header class="focus-header">
         <button class="back-button" id="backButton" type="button">← Back</button>
-        <button class="skip-button" id="skipButton" type="button">Skip</button>
       </header>
       <div>
         <p class="focus-category" id="focusCategory"></p>
@@ -473,7 +452,6 @@
     const focusQuestion = document.getElementById("focusQuestion");
     const optionsContainer = document.getElementById("optionsContainer");
     const backButton = document.getElementById("backButton");
-    const skipButton = document.getElementById("skipButton");
     const previousButton = document.getElementById("previousButton");
     const nextButton = document.getElementById("nextButton");
     const progressRing = document.querySelector(".progress-ring .progress");
@@ -501,7 +479,6 @@
 
     function statusIcon(status) {
       if (status === "completed") return "✓";
-      if (status === "skipped") return "–";
       return "○";
     }
 
@@ -582,12 +559,6 @@
       renderOptions(questions[activeIndex], option);
     }
 
-    function handleSkip() {
-      state[activeIndex].status = "skipped";
-      state[activeIndex].answer = null;
-      goToNext();
-    }
-
     function goToNext() {
       if (activeIndex < questions.length - 1) {
         openFocus(activeIndex + 1);
@@ -603,7 +574,6 @@
     }
 
     backButton.addEventListener("click", closeFocus);
-    skipButton.addEventListener("click", handleSkip);
     previousButton.addEventListener("click", goToPrevious);
     nextButton.addEventListener("click", goToNext);
 
