@@ -203,23 +203,6 @@
       transition: background-color 400ms ease, box-shadow 400ms ease, transform 400ms ease;
     }
 
-    .focus-card.card-completed {
-      background: #e8f3ea;
-      box-shadow: 0 24px 44px rgba(47, 47, 47, 0.16);
-      animation: card-success 420ms ease;
-    }
-
-    @keyframes card-success {
-      0% {
-        opacity: 0.96;
-        transform: scale(0.99);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
     .focus-header {
       display: flex;
       align-items: center;
@@ -273,9 +256,10 @@
     }
 
     .option-tile.selected {
-      border-color: #8fa6a0;
+      border-color: #5fbf6f;
       border-width: 2.5px;
-      box-shadow: 0 8px 18px rgba(143, 166, 160, 0.2);
+      background: rgba(95, 191, 111, 0.12);
+      box-shadow: 0 8px 18px rgba(95, 191, 111, 0.2);
     }
 
     .option-tile.faded {
@@ -429,7 +413,6 @@
 
     let activeIndex = 0;
     let navigationTimeoutId = null;
-    const redirectTarget = "questions.html";
 
     function renderDashboard() {
       assessmentList.innerHTML = "";
@@ -478,7 +461,6 @@
       renderOptions(item, state[index].answer);
       focusOverlay.classList.add("active");
       focusOverlay.setAttribute("aria-hidden", "false");
-      focusCard.classList.toggle("card-completed", state[index].status === "completed");
     }
 
     function closeFocus() {
@@ -552,6 +534,20 @@
       statusIcon.classList.toggle("status-answered", isAnswered);
     }
 
+    function scrollToNextQuestion(currentIndex) {
+      const nextIndex = currentIndex + 1;
+      const nextQuestion = questions[nextIndex];
+      if (!nextQuestion) {
+        return;
+      }
+      const nextCard = document.querySelector(
+        `.assessment-card[data-question-id="${nextQuestion.id}"]`
+      );
+      if (nextCard) {
+        nextCard.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+
     function selectOption(option, event) {
       const trigger = event.currentTarget;
       const isSameSelection = state[activeIndex].answer === option;
@@ -564,7 +560,7 @@
         state[activeIndex].status = "unanswered";
         renderOptions(questions[activeIndex], null);
         updateBullseyeStatus(trigger, false);
-        focusCard.classList.remove("card-completed");
+        renderDashboard();
         return;
       }
 
@@ -575,10 +571,10 @@
       state[activeIndex].status = "completed";
       renderOptions(questions[activeIndex], option);
       updateBullseyeStatus(trigger, true);
-      focusCard.classList.add("card-completed");
       navigationTimeoutId = setTimeout(() => {
-        window.location.assign(redirectTarget);
-      }, 800);
+        closeFocus();
+        scrollToNextQuestion(activeIndex);
+      }, 1000);
     }
 
     renderDashboard();
