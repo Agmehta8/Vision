@@ -340,7 +340,6 @@
   <section class="focus-overlay" id="focusOverlay" aria-hidden="true">
     <div class="focus-card" role="dialog" aria-modal="true">
       <header class="focus-header">
-        <button class="ghost-button" id="backButton" type="button">Back to Question List</button>
       </header>
       <div>
         <p class="focus-category" id="focusCategory"></p>
@@ -433,7 +432,6 @@
     const focusCategory = document.getElementById("focusCategory");
     const focusQuestion = document.getElementById("focusQuestion");
     const optionsContainer = document.getElementById("optionsContainer");
-    const backButton = document.getElementById("backButton");
     const previousButton = document.getElementById("previousButton");
     const doneForTodayButton = document.getElementById("doneForTodayButton");
     const nextButton = document.getElementById("nextButton");
@@ -556,7 +554,6 @@
       }
     }
 
-    backButton.addEventListener("click", closeFocus);
     previousButton.addEventListener("click", goToPrevious);
     doneForTodayButton.addEventListener("click", () => {
       window.location.assign("Insight Q1-7.html");
