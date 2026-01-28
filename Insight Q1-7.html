@@ -195,23 +195,6 @@
       justify-content: flex-start;
     }
 
-    .back-button {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      color: #2f2f2f;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      padding: 0.25rem 0.5rem;
-      transition: color 300ms ease;
-    }
-
-    .back-button:hover {
-      color: #8fa6a0;
-    }
-
 
     .focus-category {
       font-size: 0.85rem;
@@ -357,7 +340,7 @@
   <section class="focus-overlay" id="focusOverlay" aria-hidden="true">
     <div class="focus-card" role="dialog" aria-modal="true">
       <header class="focus-header">
-        <button class="back-button" id="backButton" type="button">← Back</button>
+        <button class="ghost-button" id="backButton" type="button">Back to Question List</button>
       </header>
       <div>
         <p class="focus-category" id="focusCategory"></p>
