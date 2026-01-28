@@ -113,20 +113,33 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      border: 2px solid #d3d3cf;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: border-color 300ms ease, background-color 300ms ease;
-      font-size: 1rem;
+      transition: color 400ms ease-in-out;
+      color: #b5b5b0;
+    }
+
+    .status-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .status-icon .bullseye-outer,
+    .status-icon .bullseye-inner {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      transition: stroke 400ms ease-in-out, fill 400ms ease-in-out;
+    }
+
+    .status-icon.status-answered {
       color: #8fa6a0;
     }
 
-    .assessment-card.completed .status-icon {
-      background-color: #8fa6a0;
-      border-color: #8fa6a0;
-      color: #ffffff;
+    .status-icon.status-answered .bullseye-inner {
+      fill: currentColor;
     }
 
 
@@ -445,6 +458,7 @@
     const nextButton = document.getElementById("nextButton");
     const progressRing = document.querySelector(".progress-ring .progress");
     const progressLabel = document.querySelector(".progress-ring .progress-label");
+    const focusCard = document.querySelector(".focus-card");
 
     let activeIndex = 0;
 
@@ -452,9 +466,11 @@
       assessmentList.innerHTML = "";
       questions.forEach((item, index) => {
         const card = document.createElement("li");
+        const isAnswered = state[index].status === "completed";
         card.className = `assessment-card ${state[index].status}`.trim();
+        card.dataset.questionId = item.id;
         card.innerHTML = `
-          <span class="status-icon">${statusIcon(state[index].status)}</span>
+          <span class="status-icon${isAnswered ? " status-answered" : ""}">${statusIcon()}</span>
           <div class="card-meta">
             <span class="card-category">${item.category}</span>
             <span class="card-question">${item.question}</span>
@@ -466,9 +482,13 @@
       updateProgress();
     }
 
-    function statusIcon(status) {
-      if (status === "completed") return "✓";
-      return "○";
+    function statusIcon() {
+      return `
+        <svg class="bullseye" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle class="bullseye-outer" cx="12" cy="12" r="9"></circle>
+          <circle class="bullseye-inner" cx="12" cy="12" r="4"></circle>
+        </svg>
+      `;
     }
 
     function updateProgress() {
@@ -485,6 +505,7 @@
       const item = questions[index];
       focusCategory.textContent = item.category;
       focusQuestion.textContent = item.question;
+      focusCard.dataset.questionId = item.id;
       renderOptions(item, state[index].answer);
       focusOverlay.classList.add("active");
       focusOverlay.setAttribute("aria-hidden", "false");
@@ -510,7 +531,7 @@
         button.className = "option-tile";
         button.dataset.value = option;
         button.innerHTML = option;
-        button.addEventListener("click", () => selectOption(option));
+        button.addEventListener("click", (event) => selectOption(option, event));
         primaryOptions.appendChild(button);
       });
 
@@ -528,7 +549,7 @@
           button.className = "option-tile";
           button.dataset.value = option;
           button.textContent = option;
-          button.addEventListener("click", () => selectOption(option));
+          button.addEventListener("click", (event) => selectOption(option, event));
           secondaryOptions.appendChild(button);
         });
         secondaryWrapper.appendChild(secondaryOptions);
@@ -548,18 +569,36 @@
       });
     }
 
-    function selectOption(option) {
+    function findClosestBullseye(trigger) {
+      const focusContainer = trigger.closest(".focus-card");
+      if (!focusContainer) return null;
+      const questionId = focusContainer.dataset.questionId;
+      return document.querySelector(
+        `.assessment-card[data-question-id="${questionId}"] .status-icon`
+      );
+    }
+
+    function updateBullseyeStatus(trigger, isAnswered) {
+      const statusIcon = findClosestBullseye(trigger);
+      if (!statusIcon) return;
+      statusIcon.classList.toggle("status-answered", isAnswered);
+    }
+
+    function selectOption(option, event) {
+      const trigger = event.currentTarget;
       const isSameSelection = state[activeIndex].answer === option;
       if (isSameSelection) {
         state[activeIndex].answer = null;
         state[activeIndex].status = "unanswered";
         renderOptions(questions[activeIndex], null);
+        updateBullseyeStatus(trigger, false);
         return;
       }
 
       state[activeIndex].answer = option;
       state[activeIndex].status = "completed";
       renderOptions(questions[activeIndex], option);
+      updateBullseyeStatus(trigger, true);
     }
 
     function goToNext() {
