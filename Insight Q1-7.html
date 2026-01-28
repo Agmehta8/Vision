@@ -349,6 +349,7 @@
       <div id="optionsContainer"></div>
       <footer class="focus-footer">
         <button class="ghost-button" id="previousButton" type="button">Previous</button>
+        <button class="ghost-button" id="doneForTodayButton" type="button">Done For Today</button>
         <button class="primary-button" id="nextButton" type="button">Next</button>
       </footer>
     </div>
@@ -434,6 +435,7 @@
     const optionsContainer = document.getElementById("optionsContainer");
     const backButton = document.getElementById("backButton");
     const previousButton = document.getElementById("previousButton");
+    const doneForTodayButton = document.getElementById("doneForTodayButton");
     const nextButton = document.getElementById("nextButton");
     const progressRing = document.querySelector(".progress-ring .progress");
     const progressLabel = document.querySelector(".progress-ring .progress-label");
@@ -556,6 +558,9 @@
 
     backButton.addEventListener("click", closeFocus);
     previousButton.addEventListener("click", goToPrevious);
+    doneForTodayButton.addEventListener("click", () => {
+      window.location.assign("Insight Q1-7.html");
+    });
     nextButton.addEventListener("click", goToNext);
 
     renderDashboard();
